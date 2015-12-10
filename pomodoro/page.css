@@ -1,0 +1,77 @@
+body {
+  width: 100%;
+  height: 100%;
+  background-color: black;
+}
+
+.content-pomodoro {
+  padding-top: 3%;
+  text-align: center;
+  color: #FFF;
+  font-family: 'Mountains of Christmas', serif;   
+  padding-left: 25%;
+  padding-right: 25%;
+}
+
+.content-pomodoro .title-box {
+  margin-left: 10%;
+  margin-right: 10%;
+}
+.content-pomodoro span {
+  padding-top: 5%;
+  font-size: 4em;
+}
+
+.content-pomodoro .adjust-size {
+  position: relative;
+  margin-top: 23%;
+}
+
+.content-pomodoro .adjust-size .adjust-timer {  
+}
+
+.content-pomodoro .adjust-size .row {
+    padding-left: 30%;
+    padding-right: 34%;
+    margin-top: -5%;
+}
+
+.content-pomodoro .adjust-size .row .button{ 
+    background-color: #000;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 1.8em;
+    outline: none;
+    margin-top: 15px;
+}
+
+.content-pomodoro .adjust-size .row .number{       
+  text-align: center;
+}
+
+.content-pomodoro .adjust-size .row .number h2{
+  margin-top: 0;
+  font-size: 4em;
+}
+
+.timer {
+  background-color: red;
+  background-size: 50% auto;
+  border: 2px solid red;
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  margin: auto;
+  position: relative;
+  cursor: pointer;
+}
+
+.timer .text-timer {
+  margin-top: 30%;
+}
+
+.timer .text-color {
+  background-color: red;
+  height: 30%;
+}

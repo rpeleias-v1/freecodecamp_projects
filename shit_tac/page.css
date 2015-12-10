@@ -1,0 +1,68 @@
+body, html {
+  box-sizing: border-box;
+  background-color: #000;
+  font-family: 'Gloria Hallelujah', serif;
+}
+
+.container-fluid {
+  border: none;
+  margin-top: 30px;
+  padding-top: 0;
+  height: 500px;
+}
+
+.container-fluid .square {  
+  width: 50%;
+  height: 100%;
+  margin: 0 auto; 
+}
+
+.container-fluid .square .middle-title h1 {
+  color: #fff;
+  text-align: center;
+  font-size: 3em;
+  margin-bottom: 5%;
+}
+
+.container-fluid .square .col-xs-4{
+  width: 30%;  
+  height: 30%;
+  display: table-cell;
+  position: relative;
+  border-radius: 5px;
+  margin: 1%;
+  background-color: #fff;
+}
+
+.img-size {
+  width: 60%;
+  height: 60%;
+  margin: 15%;
+  padding: auto;
+}
+
+.img-button {
+  width: 50px;
+  height: 50px;
+  margin: auto;
+}
+
+.modal-dialog .modal-content {
+  border: 2px solid #fff;
+}
+
+.modal-dialog .modal-content .modal-header {
+  background-color: #000;
+  color: #fff;
+  border: 2px #fff;
+}
+
+.modal-dialog .modal-content .modal-footer {
+  background-color: #000;
+  color: #fff;
+  border: 2px #fff;
+}
+
+.modal-dialog .modal-content .modal-header .modal-title {
+  text-align: center;
+}
