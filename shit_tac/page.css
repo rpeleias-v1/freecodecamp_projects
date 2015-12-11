@@ -34,6 +34,10 @@ body, html {
   background-color: #fff;
 }
 
+.row-column {
+  background-color: gray;
+}
+
 .img-size {
   width: 60%;
   height: 60%;
