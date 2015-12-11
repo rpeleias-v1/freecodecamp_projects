@@ -5,34 +5,47 @@ $(document).ready(function() {
 		this.board = [],		
 		this.player = '',
 		this.computerPlayer = '';
+		this.hasWinner = false;
 
 		this.init = function() {
 			this.board = [];
 			this.player = '',
 			this.computerPlayer = '';
+			this.hasWinner = false;
 			$('.row-column').remove();			
 			for(var possibility = 0; possibility < 9; possibility++) {				
 				var appendedDiv = $('<div class="col-xs-4 row-column" id="' + possibility + '"></div>');
 				$('.square').append(appendedDiv);
 				this.board[possibility] = {element: appendedDiv, player: ''};				
 			}
-			$('.row-column').on('click', function() {				
-				game.playerTurn(this);				
+			$('.col-xs-4').on('click', function() {				
+				if(game.player === '' && game.computerPlayer === '') {
+					alert("You can not play an empty game! Please, choose an emoticon to play it!");
+					game.showPlayersOptions();
+					game.init();
+				} else {
+					game.playerTurn(this);					
+				}				
 			});		
 		}
 
 		this.playerTurn = function(clickedElement) {
 			if($(clickedElement).find("img").length <= 0) {
-				$(clickedElement).prepend($('<img>',{id:'poop',src: game.playersImage[game.player], class: 'img-responsive img-size'}));	
-				this.board[$(clickedElement).attr("id")].player = game.player;
-				this.checkWinner(game.player);				
-				this.computerTurn();		
-			}  else {
+				$(clickedElement).prepend($('<img>',{id:'poop',src: this.playersImage[this.player], class: 'img-responsive img-size'}));	
+				this.board[$(clickedElement).attr("id")].player = this.player;
+				this.checkWinner(this.player);	
+				if(this.hasWinner === true) {					
+					this.showPlayersOptions();
+					this.init();
+				} else {
+					this.computerTurn();			
+				}				
+			} else {
 				if(this.allSpacesAreFilled() === true){
 					alert("Drawed game! Please, try it again!");
-					game.showPlayersOptions();
+					this.showPlayersOptions();
 					this.init();
-				}else{
+				} else{
 					alert("You cannot choose a filled cell!");
 				}				
 			} 			
@@ -41,19 +54,22 @@ $(document).ready(function() {
 		this.computerTurn = function() {	
 			var notFilled = true;	
 			if(this.allSpacesAreFilled() === true){
-					alert("Drawed game! Please, try it again!");
-					game.showPlayersOptions();
+					this.showPlayersOptions();
 					this.init();
-			}else{
-				while(notFilled) {
+			} else{
+				while(notFilled && this.hasWinner === false) {
 					var randomNumber = Math.round(Math.random() * (this.board.length - 1));
 					var randomChoice = this.board[randomNumber];
 					console.log(randomChoice.player);
 					if(randomChoice.player === '') {
-						$(randomChoice.element).prepend($('<img>',{id:'poop',src: this.playersImage[this.computerPlayer], class: 'img-responsive img-size'}));	
-						this.checkWinner(game.computerPlayer);
-						this.board[randomNumber].player = game.computerPlayer;	
-						notFilled = false;					
+						$(randomChoice.element).prepend($('<img>',{id:'poop',src: this.playersImage[this.computerPlayer], class: 'img-responsive img-size'}));							
+						this.board[randomNumber].player = this.computerPlayer;	
+						this.checkWinner(this.computerPlayer);
+						notFilled = false;						
+						if(this.hasWinner === true) {
+							this.showPlayersOptions();
+							this.init();
+						} 					
 					}
 				}	
 			}							
@@ -87,22 +103,36 @@ $(document).ready(function() {
 		}
 
 		this.checkWinner = function(player) {			
-			this.checkCombination(0,1,2, player);
-			this.checkCombination(3,4,5, player);
-			this.checkCombination(6,7,8, player);
-			this.checkCombination(0,3,6, player);
-			this.checkCombination(1,4,7, player);
-			this.checkCombination(2,5,8, player);
-			this.checkCombination(0,4,8, player);
-			this.checkCombination(2,4,6, player);
+			if(this.checkCombination(0,1,2, player) === true) {
+				this.alertWinner(player);
+			} else if(this.checkCombination(3,4,5, player) === true)	{
+				this.alertWinner(player);
+			} else if(this.checkCombination(6,7,8, player) === true) {
+				this.alertWinner(player);
+			} else if(this.checkCombination(0,3,6, player) === true) {
+				this.alertWinner(player);
+			} else if(this.checkCombination(1,4,7, player) === true) {
+				this.alertWinner(player);
+			} else if(this.checkCombination(2,5,8, player) === true) {
+				this.alertWinner(player);
+			} else if(this.checkCombination(0,4,8, player) === true) {
+				this.alertWinner(player);
+			} else if(this.checkCombination(2,4,6, player) === true) {
+				this.alertWinner(player);
+			}		
 		}
 
 		this.checkCombination = function(comb1, comb2, comb3, player) {
-			if((this.board[comb1].player === player) && (this.board[comb2].player === player) && (this.board[comb3].player === player)) {
-				alert("There is a winner!");
-				game.showPlayersOptions();
-				this.init();
+			if(player !== '' && (this.board[comb1].player === player) && (this.board[comb2].player === player) && (this.board[comb3].player === player)) {
+				return true;
 			}
+			return false;
+		}
+
+		this.alertWinner = function(player){
+			var winner = player === this.player ? this.player : this.computerPlayer;
+			alert("There is a winner! By unanimous decision the winner is: " + player.toUpperCase());
+			this.hasWinner = true;			
 		}
 	};
 
