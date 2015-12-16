@@ -138,6 +138,11 @@ html, body {
   height: 40px;  
 }
 
+.game-control .col-xs-4 .count-box p{  
+  color: #fff;
+  font-size: 1.6em;  
+}
+
 .game-control .col-xs-4 .strict-box{   
   background-color: yellow;
   position: relative;
