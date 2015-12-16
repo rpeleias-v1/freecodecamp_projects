@@ -48,6 +48,7 @@ $(document).ready(function() {
 	function addRandomComputerTurn() {
 		var gameElementsKeys = Object.keys(gameElements);		
 		randomPlays.push(gameElementsKeys[Math.floor(Math.random() * gameElementsKeys.length)]);
+		$("#count-input").text(randomPlays.length);
 		console.log(randomPlays);
 	}
 
@@ -72,8 +73,7 @@ $(document).ready(function() {
 			flashGameColor(clickedElement, soundSequence);					
 			if(playerTurns.length === randomPlays.length) {					
 				addRandomComputerTurn();
-				playerTurns = [];
-				$("#count-input").text(randomPlays.length);
+				playerTurns = [];				
 				computerTurn();		
 			}			
 		}
