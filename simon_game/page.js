@@ -13,6 +13,16 @@ $(document).ready(function() {
 	$('.start-box').on('click', function(){
 		initGame();
 	});
+
+	$('.strict-box').on('click', function(){
+		if($('.led-box').hasClass('off')) {			
+			$('.led-box').removeClass('off');
+			$('.led-box').addClass('on');
+		} else if($('.led-box').hasClass('on')) {			
+			$('.led-box').removeClass('on');
+			$('.led-box').addClass('off');
+		}
+	});
 	
 	$('.red').on('click', function(){
 		playerTurn(this, 1);
@@ -32,6 +42,7 @@ $(document).ready(function() {
 	
 	var randomPlays = [];
 	var playerTurns = [];
+	var timers = [];
 	var songInterval = 1000;
 	var gameElements = {'.red': 1, '.green': 2, '.yellow': 3, '.blue': 4};	
 
@@ -41,7 +52,9 @@ $(document).ready(function() {
 		$('.start-box').removeClass('unclickable');
 		$('.start-box').addClass('clickable');
 		$('.count-box').removeClass('unclickable');
-		$('.count-box').addClass('clickable');
+		$('.count-box').addClass('clickable');		
+		$('.strict-box').removeClass('unclickable');
+		$('.strict-box').addClass('clickable');		
 		$("#count-input").text('--');
 	}
 
@@ -54,17 +67,22 @@ $(document).ready(function() {
 		$('.start-box').addClass('unclickable');
 		$('.count-box').removeClass('clickable');
 		$('.count-box').addClass('unclickable');
+		$('.strict-box').removeClass('clickable');
+		$('.strict-box').addClass('unclickable');		
 		$("#count-input").text('');		
 		$('.wrap-options').removeClass('clickable');
 		$('.wrap-options').addClass('unclickable');
+		$('.led-box').removeClass('on');
+		$('.led-box').addClass('off');
 	}
 	
 	function initGame(){
 		randomPlays = [];
-		playerTurns = [];	
+		playerTurns = [];
+		clearTimers();			
 		songInterval = 1000;
 		addRandomComputerTurn();	
-		computerTurn();
+		computerTurn();		
 	}
 
 	function addRandomComputerTurn() {
@@ -79,11 +97,18 @@ $(document).ready(function() {
 		for(var count = 0; count < randomPlays.length; count++) {			
 			var randomKey = randomPlays[count];				
 			(function(randomKey) {
-				setTimeout(function(){flashGameColor(randomKey, gameElements[randomKey])}, songInterval * (count + 1));	
+				timers[count] = setTimeout(function(){flashGameColor(randomKey, gameElements[randomKey])}, songInterval * (count + 1));	
 			})(randomKey);			
 		}
 		$('.wrap-options').removeClass('unclickable');
 		$('.wrap-options').addClass('clickable');
+	}
+
+	function clearTimers(){
+		for(var key in timers) {
+			clearTimeout(timers[key]);
+		}
+		timers = [];
 	}
 
 	function increaseGameSpeed() {
@@ -99,24 +124,33 @@ $(document).ready(function() {
 		if (compareSoundEquality() === true) {
 			flashGameColor(clickedElement, soundSequence);					
 			if(playerTurns.length === randomPlays.length) {					
-				addRandomComputerTurn();
-				playerTurns = [];				
-				computerTurn();		
+				addRandomComputerTurn();						
+				if(checkVictory() === false) {
+					computerTurn();
+				}	
+				playerTurns = [];	
 			}			
 		}
 		else {
-			alert("Wrong choice! Try it again!");
-			playerTurns = [];
-			computerTurn();
-		}
-		checkVictory();		
+			alert("Wrong choice! Try it again!");			
+			if(checkVictory() === false) {
+				if($('.led-box').hasClass('off')) {
+					computerTurn();	
+				} else {
+					initGame();
+				}				
+			}			
+			playerTurns = [];			
+		}		
 	}
 
-	function checkVictory() {
-		if(playerTurns.length === 10) {
-			alert("Congratulations! You win!");
+	function checkVictory() {		
+		if(playerTurns.length === 20) {
+			alert("Congratulations! You won the game!");
 			initGame();
-		}	
+			return true;
+		}
+		return false;
 	}
 
 	function flashGameColor(element, soundSequence) {		
@@ -133,9 +167,7 @@ $(document).ready(function() {
 
 		for(var count = 0; count < playerTurns.length; count++) {
 			playerTurnsString += playerTurns[count];
-			randomPlaysString += randomPlays[count];
-			console.log(playerTurnsString);
-			console.log(randomPlaysString);
+			randomPlaysString += randomPlays[count];			
 			if(playerTurns[count] !== randomPlays[count]) {
 				matched = false;
 				break;
